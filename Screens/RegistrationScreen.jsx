@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -8,6 +9,18 @@ import {
 } from "react-native";
 
 export default function RegistrationScreen() {
+  const initialState = {
+    login: "",
+    email: "",
+    password: "",
+  };
+
+  const inputHandler = (value, name) => {
+    setCredentials((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const [credentials, setCredentials] = useState(initialState);
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -20,19 +33,31 @@ export default function RegistrationScreen() {
             placeholder="Login"
             placeholderTextColor="#BDBDBD"
             textAlign="left"
+            value={credentials.login}
+            onChangeText={(value) => {
+              inputHandler(value, "login");
+            }}
             style={styles.textInput}
           />
           <TextInput
             placeholder="Email"
             placeholderTextColor="#BDBDBD"
             textAlign="left"
+            value={credentials.email}
+            onChangeText={(value) => {
+              inputHandler(value, "email");
+            }}
             style={styles.textInput}
           />
           <TextInput
             placeholder="Password"
             placeholderTextColor="#BDBDBD"
             textAlign="left"
+            value={credentials.password}
             secureTextEntry={true}
+            onChangeText={(value) => {
+              inputHandler(value, "password");
+            }}
             style={styles.textInput}
           />
           <TouchableOpacity activeOpacity={0.8} style={styles.registerBtn}>
@@ -92,6 +117,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: "#FF6C00",
     borderRadius: 100,
+    marginTop: 43,
   },
   registerBtnText: {
     color: "#FFFFFF",
