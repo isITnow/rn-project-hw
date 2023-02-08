@@ -11,6 +11,8 @@ import {
   Keyboard,
 } from "react-native";
 
+import Input from "../components/Input.jsx";
+
 const initialState = {
   login: "",
   email: "",
@@ -57,66 +59,39 @@ export default function RegistrationScreen() {
               behavior={Platform.OS == "ios" ? "padding" : "hight"}
             >
               <Text style={styles.title}>Registration</Text>
-              <TextInput
-                placeholder="Login"
-                placeholderTextColor="#BDBDBD"
-                textAlign="left"
+
+              <Input
+                placeholder="Enter login name"
                 value={credentials.login}
-                onFocus={() => {
-                  onFocusHandler();
-                  setIsFocused(true);
-                }}
-                onBlur={() => setIsFocused(false)}
                 onChangeText={(value) => {
                   inputHandler(value, "login");
                 }}
-                // style={styles.textInput}
-                style={{
-                  ...styles.textInput,
-                  borderColor: isFocused ? "#FF6C00" : "#E8E8E8",
-                  backgroundColor: isFocused ? "#FFFFFF" : "#F6F6F6",
-                }}
-              />
-              <TextInput
-                placeholder="Email"
-                placeholderTextColor="#BDBDBD"
-                textAlign="left"
-                value={credentials.email}
                 onFocus={() => {
                   onFocusHandler();
-                  setIsFocused(true);
                 }}
-                onBlur={() => setIsFocused(false)}
+              />
+
+              <Input
+                placeholder="Enter your email"
+                value={credentials.email}
                 onChangeText={(value) => {
                   inputHandler(value, "email");
                 }}
-                // style={styles.textInput}
-                style={{
-                  ...styles.textInput,
-                  borderColor: isFocused ? "#FF6C00" : "#E8E8E8",
-                  backgroundColor: isFocused ? "#FFFFFF" : "#F6F6F6",
-                }}
-              />
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="#BDBDBD"
-                textAlign="left"
-                value={credentials.password}
-                secureTextEntry={true}
                 onFocus={() => {
                   onFocusHandler();
-                  setIsFocused(true);
                 }}
-                onBlur={() => setIsFocused(false)}
+              />
+
+              <Input
+                placeholder="Enter password"
+                value={credentials.password}
                 onChangeText={(value) => {
                   inputHandler(value, "password");
                 }}
-                // style={styles.textInput}
-                style={{
-                  ...styles.textInput,
-                  borderColor: isFocused ? "#FF6C00" : "#E8E8E8",
-                  backgroundColor: isFocused ? "#FFFFFF" : "#F6F6F6",
+                onFocus={() => {
+                  onFocusHandler();
                 }}
+                password
               />
               {!isShownKeyboard && (
                 <>
