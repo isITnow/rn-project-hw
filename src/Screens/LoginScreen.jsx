@@ -6,10 +6,11 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  TextInput,
-  // KeyboardAvoidingView,
+  KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
+
+import Input from "../components/Input.jsx";
 
 const initialState = {
   email: "",
@@ -19,7 +20,6 @@ const initialState = {
 export default function LoginScreen() {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
 
   const inputHandler = (value, name) => {
     setCredentials((prevState) => ({ ...prevState, [name]: value }));
@@ -46,78 +46,60 @@ export default function LoginScreen() {
           source={require("../../assets/images/background_2x.jpg")}
           style={styles.image}
         >
-          {/* <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "hight"}
-          > */}
           <View
             style={{
               ...styles.form,
               paddingBottom: isShownKeyboard ? 20 : 110,
             }}
           >
-            <Text style={styles.title}>Log in</Text>
-            <TextInput
-              placeholder="Email"
-              placeholderTextColor="#BDBDBD"
-              textAlign="left"
-              value={credentials.email}
-              onFocus={() => {
-                onFocusHandler();
-                setIsFocused(true);
-              }}
-              onBlur={() => setIsFocused(false)}
-              onChangeText={(value) => {
-                inputHandler(value, "email");
-              }}
-              style={{
-                ...styles.textInput,
-                borderColor: isFocused ? "#FF6C00" : "#E8E8E8",
-                backgroundColor: isFocused ? "#FFFFFF" : "#F6F6F6",
-              }}
-            />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="#BDBDBD"
-              textAlign="left"
-              value={credentials.password}
-              secureTextEntry={true}
-              onFocus={() => {
-                onFocusHandler();
-                setIsFocused(true);
-              }}
-              onBlur={() => setIsFocused(false)}
-              onChangeText={(value) => {
-                inputHandler(value, "password");
-              }}
-              // style={styles.textInput}
-              style={{
-                ...styles.textInput,
-                borderColor: isFocused ? "#FF6C00" : "#E8E8E8",
-                backgroundColor: isFocused ? "#FFFFFF" : "#F6F6F6",
-              }}
-            />
-            {!isShownKeyboard && (
-              <>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={submitHandler}
-                  style={styles.registerBtn}
-                >
-                  <Text style={styles.registerBtnText}>Sign up</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => console.log("Click")}
-                  style={styles.redirectBtn}
-                >
-                  <Text style={styles.redirectText}>
-                    Have no account? Register
-                  </Text>
-                </TouchableOpacity>
-              </>
-            )}
+            <KeyboardAvoidingView
+              behavior={Platform.OS == "ios" ? "padding" : "hight"}
+            >
+              <Text style={styles.title}>Log in</Text>
+              <Input
+                placeholder="Enter your email"
+                value={credentials.email}
+                onChangeText={(value) => {
+                  inputHandler(value, "email");
+                }}
+                onFocus={() => {
+                  onFocusHandler();
+                }}
+              />
+
+              <Input
+                placeholder="Enter password"
+                value={credentials.password}
+                onChangeText={(value) => {
+                  inputHandler(value, "password");
+                }}
+                onFocus={() => {
+                  onFocusHandler();
+                }}
+                password
+              />
+              {!isShownKeyboard && (
+                <>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={submitHandler}
+                    style={styles.registerBtn}
+                  >
+                    <Text style={styles.registerBtnText}>Sign up</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => console.log("Click")}
+                    style={styles.redirectBtn}
+                  >
+                    <Text style={styles.redirectText}>
+                      Have no account? Register
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </KeyboardAvoidingView>
           </View>
-          {/* </KeyboardAvoidingView> */}
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
