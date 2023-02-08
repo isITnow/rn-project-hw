@@ -150,16 +150,6 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
   },
-  textInput: {
-    borderWidth: 1,
-    borderRadius: 8,
-    color: "#212121",
-    fontSize: 16,
-    lineHeight: 19,
-    marginBottom: 16,
-    padding: 15,
-    width: "100%",
-  },
   registerBtn: {
     borderRadius: 100,
     backgroundColor: "#FF6C00",
