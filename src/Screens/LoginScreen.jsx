@@ -12,12 +12,11 @@ import {
 } from "react-native";
 
 const initialState = {
-  login: "",
   email: "",
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function LoginScreen() {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -44,7 +43,7 @@ export default function RegistrationScreen() {
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../assets/images/background_2x.jpg")}
+          source={require("../../assets/images/background_2x.jpg")}
           style={styles.image}
         >
           {/* <KeyboardAvoidingView
@@ -53,30 +52,10 @@ export default function RegistrationScreen() {
           <View
             style={{
               ...styles.form,
-              paddingBottom: isShownKeyboard ? 20 : 45,
+              paddingBottom: isShownKeyboard ? 20 : 110,
             }}
           >
-            <Text style={styles.title}>Registration</Text>
-            <TextInput
-              placeholder="Login"
-              placeholderTextColor="#BDBDBD"
-              textAlign="left"
-              value={credentials.login}
-              onFocus={() => {
-                onFocusHandler();
-                setIsFocused(true);
-              }}
-              onBlur={() => setIsFocused(false)}
-              onChangeText={(value) => {
-                inputHandler(value, "login");
-              }}
-              // style={styles.textInput}
-              style={{
-                ...styles.textInput,
-                borderColor: isFocused ? "#FF6C00" : "#E8E8E8",
-                backgroundColor: isFocused ? "#FFFFFF" : "#F6F6F6",
-              }}
-            />
+            <Text style={styles.title}>Log in</Text>
             <TextInput
               placeholder="Email"
               placeholderTextColor="#BDBDBD"
@@ -90,7 +69,6 @@ export default function RegistrationScreen() {
               onChangeText={(value) => {
                 inputHandler(value, "email");
               }}
-              // style={styles.textInput}
               style={{
                 ...styles.textInput,
                 borderColor: isFocused ? "#FF6C00" : "#E8E8E8",
@@ -133,7 +111,7 @@ export default function RegistrationScreen() {
                   style={styles.redirectBtn}
                 >
                   <Text style={styles.redirectText}>
-                    Already have an account? Log in
+                    Have no account? Register
                   </Text>
                 </TouchableOpacity>
               </>
@@ -163,7 +141,6 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     letterSpacing: 0.16,
     marginBottom: 32,
-    marginTop: 60,
     textAlign: "center",
   },
   form: {
