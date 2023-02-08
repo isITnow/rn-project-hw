@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Medium",
     fontSize: 30,
     lineHeight: 35,
-    letterSpacing: 0.16,
+    letterSpacing: 0.8,
     marginBottom: 32,
     textAlign: "center",
   },
@@ -139,8 +139,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: "#212121",
     fontSize: 16,
-    // borderColor: "#E8E8E8",
-    // backgroundColor: "#F6F6F6",
     lineHeight: 19,
     marginBottom: 16,
     padding: 15,
@@ -166,8 +164,10 @@ const styles = StyleSheet.create({
   },
   redirectText: {
     color: "#1B4371",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 18,
+    letterSpacing: 0.7,
     textAlign: "center",
   },
 });
