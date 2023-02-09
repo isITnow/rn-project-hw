@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
-
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import RegistrationScreen from "./src/screens/auth/RegistrationScreen";
 import LoginScreen from "./src/screens/auth/LoginScreen";
+
+const AuthStack = createStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -32,10 +35,12 @@ export default function App() {
   }
 
   return (
-    <>
-      <RegistrationScreen />
-      {/* <LoginScreen /> */}
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        <AuthStack.Screen name="Registration" component={RegistrationScreen} />
+        <AuthStack.Screen name="Login" component={LoginScreen} />
+      </AuthStack.Navigator>
       <StatusBar style="auto" />
-    </>
+    </NavigationContainer>
   );
 }
