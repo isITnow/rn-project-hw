@@ -6,20 +6,23 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  TextInput,
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
 
-import Input from "../components/Input.jsx";
+import Input from "../../components/Input";
 
 const initialState = {
+  login: "",
   email: "",
   password: "",
 };
 
-export default function LoginScreen() {
+export default function RegistrationScreen() {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const inputHandler = (value, name) => {
     setCredentials((prevState) => ({ ...prevState, [name]: value }));
@@ -43,19 +46,31 @@ export default function LoginScreen() {
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../../assets/images/background_2x.jpg")}
+          source={require("../../../assets/images/background_2x.jpg")}
           style={styles.image}
         >
           <View
             style={{
               ...styles.form,
-              paddingBottom: isShownKeyboard ? 20 : 110,
+              paddingBottom: isShownKeyboard ? 20 : 45,
             }}
           >
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "hight"}
             >
-              <Text style={styles.title}>Log in</Text>
+              <Text style={styles.title}>Registration</Text>
+
+              <Input
+                placeholder="Enter login name"
+                value={credentials.login}
+                onChangeText={(value) => {
+                  inputHandler(value, "login");
+                }}
+                onFocus={() => {
+                  onFocusHandler();
+                }}
+              />
+
               <Input
                 placeholder="Enter your email"
                 value={credentials.email}
@@ -93,7 +108,7 @@ export default function LoginScreen() {
                     style={styles.redirectBtn}
                   >
                     <Text style={styles.redirectText}>
-                      Have no account? Register
+                      Already have an account? Log in
                     </Text>
                   </TouchableOpacity>
                 </>
@@ -123,6 +138,7 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     letterSpacing: 0.8,
     marginBottom: 32,
+    marginTop: 60,
     textAlign: "center",
   },
   form: {
@@ -133,16 +149,6 @@ const styles = StyleSheet.create({
     paddingTop: 32,
     paddingLeft: 16,
     paddingRight: 16,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderRadius: 8,
-    color: "#212121",
-    fontSize: 16,
-    lineHeight: 19,
-    marginBottom: 16,
-    padding: 15,
-    width: "100%",
   },
   registerBtn: {
     borderRadius: 100,

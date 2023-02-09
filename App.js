@@ -4,8 +4,8 @@ import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 
-import RegistrationScreen from "./src/Screens/RegistrationScreen";
-import LoginScreen from "./src/Screens/LoginScreen";
+import RegistrationScreen from "./src/screens/auth/RegistrationScreen";
+import LoginScreen from "./src/screens/auth/LoginScreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
