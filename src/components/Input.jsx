@@ -36,7 +36,7 @@ export default function Input({ password, onFocus, ...props }) {
           style={styles.showPassBtn}
         >
           <Text style={styles.showPassBtnText}>
-            {!isShownPassword ? "hide password" : "show password"}
+            {!isShownPassword ? "hide" : "show"}
           </Text>
         </TouchableOpacity>
       )}
