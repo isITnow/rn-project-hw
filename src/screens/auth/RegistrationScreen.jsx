@@ -19,7 +19,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -55,6 +55,12 @@ export default function RegistrationScreen() {
               paddingBottom: isShownKeyboard ? 20 : 45,
             }}
           >
+            <View style={styles.avatarWrapper}>
+              <ImageBackground
+                source={require("../../../assets/images/default_avatar.jpg")}
+                style={styles.avatar}
+              />
+            </View>
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "hight"}
             >
@@ -104,7 +110,7 @@ export default function RegistrationScreen() {
                   </TouchableOpacity>
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => console.log("Click")}
+                    onPress={() => navigation.navigate("Login")}
                     style={styles.redirectBtn}
                   >
                     <Text style={styles.redirectText}>
@@ -129,6 +135,20 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: "flex-end",
+    resizeMode: "cover",
+  },
+  avatarWrapper: {
+    alignSelf: "center",
+    transform: [{ translateY: -50 }],
+    position: "absolute",
+    overflow: "hidden",
+    // borderWidth: 1,
+    borderRadius: 16,
+    backgroundColor: "#F6F6F6",
+  },
+  avatar: {
+    height: 120,
+    width: 120,
     resizeMode: "cover",
   },
   title: {

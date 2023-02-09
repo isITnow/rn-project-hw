@@ -17,7 +17,7 @@ const initialState = {
   password: "",
 };
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
 
@@ -89,7 +89,7 @@ export default function LoginScreen() {
                   </TouchableOpacity>
                   <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => console.log("Click")}
+                    onPress={() => navigation.navigate("Registration")}
                     style={styles.redirectBtn}
                   >
                     <Text style={styles.redirectText}>
