@@ -37,6 +37,7 @@ export default function LoginScreen({ navigation }) {
   const submitHandler = () => {
     console.log(credentials);
     setCredentials(initialState);
+    navigation.navigate("Home");
   };
 
   return (

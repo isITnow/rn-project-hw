@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   ImageBackground,
   StyleSheet,
@@ -6,7 +7,6 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  TextInput,
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
@@ -22,7 +22,6 @@ const initialState = {
 export default function RegistrationScreen({ navigation }) {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
 
   const inputHandler = (value, name) => {
     setCredentials((prevState) => ({ ...prevState, [name]: value }));
@@ -40,6 +39,7 @@ export default function RegistrationScreen({ navigation }) {
   const submitHandler = () => {
     console.log(credentials);
     setCredentials(initialState);
+    navigation.navigate("Home");
   };
 
   return (
@@ -139,10 +139,9 @@ const styles = StyleSheet.create({
   },
   avatarWrapper: {
     alignSelf: "center",
-    transform: [{ translateY: -50 }],
+    transform: [{ translateY: -60 }],
     position: "absolute",
     overflow: "hidden",
-    // borderWidth: 1,
     borderRadius: 16,
     backgroundColor: "#F6F6F6",
   },
