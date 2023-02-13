@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import {
   ImageBackground,
   StyleSheet,
@@ -129,8 +128,9 @@ export default function RegistrationScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     flex: 1,
+    backgroundColor: "#fff",
+    // justifyContent: "flex-end",
   },
   image: {
     flex: 1,
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",
+    letterSpacing: 0.7,
   },
   redirectBtn: {
     marginTop: 10,

@@ -84,9 +84,9 @@ export default function LoginScreen({ navigation }) {
                   <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={submitHandler}
-                    style={styles.registerBtn}
+                    style={styles.loginBtn}
                   >
-                    <Text style={styles.registerBtnText}>Sign up</Text>
+                    <Text style={styles.loginBtnText}>Log in</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     activeOpacity={0.8}
@@ -111,11 +111,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flex: 1,
+    // justifyContent: "flex-end",
   },
   image: {
     flex: 1,
-    justifyContent: "flex-end",
     resizeMode: "cover",
+    justifyContent: "flex-end",
   },
   title: {
     color: "#212121",
@@ -145,17 +146,18 @@ const styles = StyleSheet.create({
     padding: 15,
     width: "100%",
   },
-  registerBtn: {
+  loginBtn: {
     borderRadius: 100,
     backgroundColor: "#FF6C00",
     marginTop: 33,
     paddingTop: 16,
     paddingBottom: 16,
   },
-  registerBtnText: {
+  loginBtnText: {
     color: "#FFFFFF",
     fontSize: 16,
     lineHeight: 19,
+    letterSpacing: 0.7,
     textAlign: "center",
   },
   redirectBtn: {
