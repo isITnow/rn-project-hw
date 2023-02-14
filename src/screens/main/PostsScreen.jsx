@@ -1,125 +1,72 @@
-import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import { SimpleLineIcons, Feather } from "@expo/vector-icons";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import DefaultScreenPosts from "../nestedScreens/DefaultScreenPosts";
+import CommentsScreen from "../nestedScreens/CommentsScreen";
+import MapScreen from "../nestedScreens/MapScreen";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
-export default function PostsScreen({ route }) {
-  // const { photoInfo, photoData } = route.params;
-  console.log("route.params", route.params);
+const NestedScreen = createStackNavigator();
 
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
-  console.log("posts: ", posts);
-
+export default function PostsScreen() {
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={posts}
-        keyExtractor={(item, indx) => indx.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.postWrapper}>
-            <Image
-              style={styles.image}
-              source={{ uri: item.photoData.photo }}
-            />
-            <View style={styles.infoBox}>
-              <Text style={styles.title}>{item.photoData.photoInfo.title}</Text>
-              <View style={styles.infoWrapper}>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => console.log("Navigate to CommentsScreen")}
-                  style={styles.commentsWrapper}
-                >
-                  <Feather name="message-circle" size={24} color="#BDBDBD" />
-                  <Text style={styles.commentsCount}>15</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => console.log("Navigate to MapScreen")}
-                  style={styles.locationWrapper}
-                >
-                  <SimpleLineIcons
-                    style={styles.locationIcon}
-                    name="location-pin"
-                    size={24}
-                    color="#BDBDBD"
-                  />
-                  <Text style={styles.location}>
-                    {item.photoData.photoInfo.location}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        )}
+    <NestedScreen.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerTitleAlign: "center",
+        headerTitleStyle: {
+          fontFamily: "Roboto-Medium",
+          fontSize: 17,
+          lineHeight: 22,
+          letterSpacing: 0.7,
+          color: "#212121",
+        },
+        headerStyle: {
+          borderBottomWidth: 1,
+          borderColor: "rgba(0, 0, 0, 0.3)",
+        },
+      }}
+      initialRouteName="DefaultScreen"
+    >
+      <NestedScreen.Screen
+        options={{
+          headerTitle: "Posts",
+          headerLeft: () => "",
+          headerRight: () => (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => console.log("Logout Click")}
+              style={styles.redirectBtn}
+            >
+              <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          ),
+        }}
+        name="DefaultScreen"
+        component={DefaultScreenPosts}
       />
-    </View>
+      <NestedScreen.Screen
+        options={{
+          headerTitle: "Comments",
+          tabBarHideOnKeyboard: true,
+        }}
+        name="Comments"
+        component={CommentsScreen}
+      />
+      <NestedScreen.Screen
+        options={{
+          headerTitle: "Map",
+          tabBarHideOnKeyboard: true,
+        }}
+        name="Map"
+        component={MapScreen}
+      />
+    </NestedScreen.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#ffffff",
-    flex: 1,
+  redirectBtn: {
     paddingHorizontal: 16,
-  },
-  postWrapper: {
-    // borderWidth: 1,
-    marginTop: 32,
-  },
-  image: {
-    borderRadius: 8,
-    height: 240,
-    width: "100%",
-  },
-  infoBox: {
-    marginTop: 8,
-    paddingHorizontal: 5,
-  },
-  title: {
-    color: "#212121",
-    fontFamily: "Roboto-Medium",
-    fontSize: 16,
-    lineHeight: 19,
-    letterSpacing: 0.7,
-  },
-  infoWrapper: {
-    flexDirection: "row",
-    marginTop: 8,
-    justifyContent: "space-between",
-  },
-  locationWrapper: {
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  locationIcon: {
-    // marginRight: 5,
-  },
-  location: {
-    textDecorationLine: "underline",
-    marginLeft: 5,
-  },
-  commentsWrapper: {
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  commentsCount: {
-    fontFamily: "Roboto-Medium",
-    fontSize: 16,
-    color: "#BDBDBD",
-    lineHeight: 19,
-    letterSpacing: 0.7,
-    marginLeft: 5,
+    paddingVertical: 10,
   },
 });
