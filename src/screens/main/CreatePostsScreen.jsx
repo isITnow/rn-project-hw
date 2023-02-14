@@ -20,12 +20,16 @@ const initialState = {
 };
 
 export default function CreatePostsScreen({ navigation }) {
+  const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [photo, setPhoto] = useState("");
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [photoInfo, setPhotoInfo] = useState(initialState);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [isShownKeyboard, setIsShownKeyboard] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [coordinates, setCoordinates] = useState(null);
+  console.log("coordinates: ", coordinates);
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -41,11 +45,25 @@ export default function CreatePostsScreen({ navigation }) {
     })();
   }, []);
 
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+    const { coords } = await Location.getCurrentPositionAsync();
+    const coordinates = {
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+    };
+    setCoordinates(coordinates);
+  };
+
   const takePhoto = async () => {
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync();
       await MediaLibrary.createAssetAsync(uri);
-      // getlocation();
+      getLocation();
       setPhoto(uri);
     }
   };
