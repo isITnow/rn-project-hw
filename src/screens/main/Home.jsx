@@ -1,11 +1,6 @@
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  Ionicons,
-  Feather,
-  AntDesign,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
 
 import CreatePostsScreen from "./CreatePostsScreen";
 import PostsScreen from "./PostsScreen";
@@ -13,7 +8,7 @@ import ProfileScreen from "./ProfileScreen";
 
 const MainTab = createBottomTabNavigator();
 
-export default function Home(props) {
+export default function Home({ navigation }) {
   return (
     <MainTab.Navigator
       initialRouteName="Posts"
@@ -38,6 +33,7 @@ export default function Home(props) {
     >
       <MainTab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             return (
               <View
@@ -47,11 +43,6 @@ export default function Home(props) {
                 }}
               >
                 <Ionicons
-                  style={
-                    {
-                      // ...styles.tabIconStyle,
-                    }
-                  }
                   name="grid-outline"
                   size={24}
                   color={focused ? "#ffffff" : "rgba(33, 33, 33, 0.8)"}
@@ -59,17 +50,6 @@ export default function Home(props) {
               </View>
             );
           },
-          headerRight: () => (
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => console.log("Logout Click")}
-              style={styles.redirectBtn}
-            >
-              <View style={styles.logoutIconWrapper}>
-                <MaterialIcons name="logout" size={24} color="#BDBDBD" />
-              </View>
-            </TouchableOpacity>
-          ),
           headerStyle: {
             borderBottomWidth: 1,
             borderColor: "rgba(0, 0, 0, 0.3)",
@@ -89,10 +69,6 @@ export default function Home(props) {
                 }}
               >
                 <AntDesign
-                  // style={{
-                  //   // ...styles.tabIconStyle,
-                  //   backgroundColor: focused ? "#FF6C00" : "#ffffff",
-                  // }}
                   name="plus"
                   size={24}
                   color={focused ? "#ffffff" : "rgba(33, 33, 33, 0.8)"}
@@ -100,10 +76,20 @@ export default function Home(props) {
               </View>
             );
           },
+          headerTitle: "Create a new post",
           headerStyle: {
             borderBottomWidth: 1,
             borderColor: "rgba(0, 0, 0, 0.3)",
           },
+          headerLeft: () => (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("Posts")}
+              style={styles.redirectBtn}
+            >
+              <Ionicons name="arrow-back" size={24} color="black" />
+            </TouchableOpacity>
+          ),
         }}
         name="Create posts"
         component={CreatePostsScreen}
@@ -120,10 +106,6 @@ export default function Home(props) {
                 }}
               >
                 <Feather
-                  // style={{
-                  //   // ...styles.tabIconStyle,
-                  //   backgroundColor: focused ? "#FF6C00" : "#ffffff",
-                  // }}
                   name="user"
                   size={24}
                   color={focused ? "#ffffff" : "rgba(33, 33, 33, 0.8)"}
@@ -145,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  logoutIconWrapper: {
+  redirectBtn: {
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
