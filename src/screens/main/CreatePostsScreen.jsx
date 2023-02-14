@@ -45,11 +45,11 @@ export default function CreatePostsScreen({ navigation }) {
   }, []);
 
   const getLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
+    // let { status } = await Location.requestForegroundPermissionsAsync();
+    // if (status !== "granted") {
+    //   setErrorMsg("Permission to access location was denied");
+    //   return;
+    // }
     const { coords } = await Location.getCurrentPositionAsync();
     const coordinates = {
       latitude: coords.latitude,
