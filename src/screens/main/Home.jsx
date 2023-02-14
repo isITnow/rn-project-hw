@@ -19,7 +19,13 @@ export default function Home(props) {
       initialRouteName="Posts"
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarStyle: { height: 85, paddingLeft: 80, paddingRight: 80 },
+        tabBarStyle: {
+          height: 85,
+          paddingLeft: 80,
+          paddingRight: 80,
+          borderTopWidth: 1,
+          borderColor: "rgba(0, 0, 0, 0.1)",
+        },
         headerTitleAlign: "center",
         headerTitleStyle: {
           color: "#212121",
@@ -64,6 +70,10 @@ export default function Home(props) {
               </View>
             </TouchableOpacity>
           ),
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderColor: "rgba(0, 0, 0, 0.3)",
+          },
         }}
         name="Posts"
         component={PostsScreen}
@@ -89,6 +99,10 @@ export default function Home(props) {
                 />
               </View>
             );
+          },
+          headerStyle: {
+            borderBottomWidth: 1,
+            borderColor: "rgba(0, 0, 0, 0.3)",
           },
         }}
         name="Create posts"
