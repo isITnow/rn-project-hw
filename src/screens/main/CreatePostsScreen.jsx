@@ -29,7 +29,6 @@ export default function CreatePostsScreen({ navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [coordinates, setCoordinates] = useState(null);
-  console.log("coordinates: ", coordinates);
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -79,12 +78,13 @@ export default function CreatePostsScreen({ navigation }) {
   const photoData = {
     photo,
     photoInfo,
+    coordinates,
   };
 
   const isPhotoDataReady = !!photo && !!photoInfo.title && !!photoInfo.location;
 
   const postHandler = () => {
-    navigation.navigate("Posts", { photoData });
+    navigation.navigate("DefaultScreen", { photoData });
     setPhoto("");
     setPhotoInfo(initialState);
   };
@@ -138,13 +138,7 @@ export default function CreatePostsScreen({ navigation }) {
               inputHandler(value, "title");
             }}
             textAlign="left"
-            // onFocus={}
-            // onBlur={}
-            style={{
-              ...styles.textInput,
-              // borderColor: isInFocus ? "#FF6C00" : "#E8E8E8",
-              // backgroundColor: isInFocus ? "#FFFFFF" : "#F6F6F6",
-            }}
+            style={styles.textInput}
             placeholderTextColor="#BDBDBD"
             placeholder="Title..."
           />
@@ -154,14 +148,10 @@ export default function CreatePostsScreen({ navigation }) {
               inputHandler(value, "location");
             }}
             textAlign="left"
-            // onFocus={}
-            // onBlur={}
             style={{
               ...styles.textInput,
               marginTop: 16,
               paddingLeft: 30,
-              // borderColor: isInFocus ? "#FF6C00" : "#E8E8E8",
-              // backgroundColor: isInFocus ? "#FFFFFF" : "#F6F6F6",
             }}
             placeholderTextColor="#BDBDBD"
             placeholder="Location..."
