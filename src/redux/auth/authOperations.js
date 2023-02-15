@@ -14,7 +14,11 @@ export const authSignUpUser =
   ({ login, email, password }) =>
   async (dispatch, getState) => {
     try {
-      await createUserWithEmailAndPassword(auth, email.toLowerCase(), password);
+      await createUserWithEmailAndPassword(
+        auth,
+        email.toLowerCase(),
+        password.trim()
+      );
       await updateProfile(auth.currentUser, {
         displayName: login.trim(),
       });
@@ -37,7 +41,11 @@ export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, getState) => {
     try {
-      await signInWithEmailAndPassword(auth, email.toLowerCase(), password);
+      await signInWithEmailAndPassword(
+        auth,
+        email.toLowerCase(),
+        password.trim()
+      );
     } catch (error) {
       console.error("LOGIN ERROR: ", error.message);
     }
