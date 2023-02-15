@@ -63,7 +63,7 @@ export default function LoginScreen({ navigation }) {
                 placeholder="Enter your email"
                 value={credentials.email}
                 onChangeText={(value) => {
-                  inputHandler(value, "email");
+                  inputHandler(value.toLowerCase(), "email");
                 }}
                 onFocus={() => {
                   onFocusHandler();

@@ -14,6 +14,12 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { FontAwesome, SimpleLineIcons } from "@expo/vector-icons";
 
+import { db } from "../../firebase/config";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
+
+import { nanoid } from "nanoid";
+
 const initialState = {
   title: "",
   location: "",
@@ -67,8 +73,25 @@ export default function CreatePostsScreen({ navigation }) {
     }
   };
 
-  const refreshPhoto = () => {
+  const retakePhoto = () => {
     setPhoto("");
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const photoId = nanoid(10);
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `photos/${photoId}`);
+
+    await uploadBytes(storageRef, file);
+
+    const photoPath = ref(storage, `photos/${photoId}`);
+    const photoUrl = await getDownloadURL(photoPath);
+
+    return photoUrl;
   };
 
   const inputHandler = (value, name) => {
@@ -85,6 +108,7 @@ export default function CreatePostsScreen({ navigation }) {
 
   const postHandler = () => {
     navigation.navigate("DefaultScreen", { photoData });
+    uploadPhotoToServer();
     setPhoto("");
     setPhotoInfo(initialState);
   };
@@ -107,7 +131,7 @@ export default function CreatePostsScreen({ navigation }) {
               </View>
               <TouchableOpacity
                 style={styles.refreshButton}
-                onPress={refreshPhoto}
+                onPress={retakePhoto}
               >
                 <FontAwesome name="refresh" size={20} color="white" />
               </TouchableOpacity>
