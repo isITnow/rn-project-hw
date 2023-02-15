@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
-import { NavigationContainer } from "@react-navigation/native";
 
-import useRoute from "./src/router";
+import Main from "./src/components/Main";
 
 export default function App() {
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const routing = useRoute(isAuthorized);
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
@@ -19,7 +18,7 @@ export default function App() {
       try {
         await SplashScreen.preventAutoHideAsync();
       } catch (error) {
-        console.log(error.message);
+        console.log("SplashScreen: ", error.message);
       }
     }
     prepare();
@@ -31,5 +30,9 @@ export default function App() {
     SplashScreen.hideAsync();
   }
 
-  return <NavigationContainer>{routing}</NavigationContainer>;
+  return (
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  );
 }

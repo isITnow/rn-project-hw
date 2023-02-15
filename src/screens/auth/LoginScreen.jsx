@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   ImageBackground,
   StyleSheet,
@@ -9,8 +10,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
-
 import Input from "../../components/Input";
+import { authSignInUser } from "../../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -20,6 +21,8 @@ const initialState = {
 export default function LoginScreen({ navigation }) {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
+
+  const dispatcher = useDispatch();
 
   const inputHandler = (value, name) => {
     setCredentials((prevState) => ({ ...prevState, [name]: value }));
@@ -35,9 +38,8 @@ export default function LoginScreen({ navigation }) {
   };
 
   const submitHandler = () => {
-    console.log(credentials);
+    dispatcher(authSignInUser(credentials));
     setCredentials(initialState);
-    navigation.navigate("Home");
   };
 
   return (

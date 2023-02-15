@@ -9,8 +9,9 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
-
+import { useDispatch } from "react-redux";
 import Input from "../../components/Input";
+import { authSignUpUser } from "../../redux/auth/authOperations";
 
 const initialState = {
   login: "",
@@ -21,6 +22,8 @@ const initialState = {
 export default function RegistrationScreen({ navigation }) {
   const [credentials, setCredentials] = useState(initialState);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
+
+  const dispatch = useDispatch();
 
   const inputHandler = (value, name) => {
     setCredentials((prevState) => ({ ...prevState, [name]: value }));
@@ -36,9 +39,9 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   const submitHandler = () => {
-    console.log(credentials);
+    dispatch(authSignUpUser(credentials));
     setCredentials(initialState);
-    navigation.navigate("Home");
+    // navigation.navigate("Home");
   };
 
   return (
@@ -80,7 +83,7 @@ export default function RegistrationScreen({ navigation }) {
                 placeholder="Enter your email"
                 value={credentials.email}
                 onChangeText={(value) => {
-                  inputHandler(value, "email");
+                  inputHandler(value.toLowerCase(), "email");
                 }}
                 onFocus={() => {
                   onFocusHandler();

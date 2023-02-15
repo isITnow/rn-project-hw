@@ -9,7 +9,7 @@ const AuthStack = createStackNavigator();
 export default function useRoute(isAuth) {
   if (!isAuth) {
     return (
-      <AuthStack.Navigator>
+      <AuthStack.Navigator initialRouteName="Login">
         <AuthStack.Screen
           options={{ headerShown: false }}
           name="Registration"
@@ -20,12 +20,13 @@ export default function useRoute(isAuth) {
           name="Login"
           component={LoginScreen}
         />
-        <AuthStack.Screen
+        {/* <AuthStack.Screen
           options={{ headerShown: false }}
           name="Home"
           component={Home}
-        />
+        /> */}
       </AuthStack.Navigator>
     );
   }
+  return <Home />;
 }

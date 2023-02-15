@@ -4,10 +4,17 @@ import DefaultScreenPosts from "../nestedScreens/DefaultScreenPosts";
 import CommentsScreen from "../nestedScreens/CommentsScreen";
 import MapScreen from "../nestedScreens/MapScreen";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { authSignOutUser } from "../../redux/auth/authOperations";
 
 const NestedScreen = createStackNavigator();
 
 export default function PostsScreen() {
+  const dispatch = useDispatch();
+  const logOut = () => {
+    dispatch(authSignOutUser());
+  };
+
   return (
     <NestedScreen.Navigator
       screenOptions={{
@@ -34,7 +41,7 @@ export default function PostsScreen() {
           headerRight: () => (
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => console.log("Logout Click")}
+              onPress={logOut}
               style={styles.redirectBtn}
             >
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
