@@ -9,14 +9,30 @@ import {
 } from "react-native";
 import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 
+import { db } from "../../firebase/config";
+import { collection, getDocs } from "firebase/firestore";
+
 export default function DefaultScreenPosts({ route, navigation }) {
   const [posts, setPosts] = useState([]);
+  console.log("posts: ", posts);
+
+  const getAllPosts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "posts"));
+
+      if (querySnapshot) {
+        setPosts(
+          querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        );
+      }
+    } catch (error) {
+      console.error("Get posts error: ", error.message);
+    }
+  };
 
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    getAllPosts();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -25,12 +41,9 @@ export default function DefaultScreenPosts({ route, navigation }) {
         keyExtractor={(item, indx) => indx.toString()}
         renderItem={({ item }) => (
           <View style={styles.postWrapper}>
-            <Image
-              style={styles.image}
-              source={{ uri: item.photoData.photo }}
-            />
+            <Image style={styles.image} source={{ uri: item.photo }} />
             <View style={styles.infoBox}>
-              <Text style={styles.title}>{item.photoData.photoInfo.title}</Text>
+              <Text style={styles.title}>{item.title}</Text>
               <View style={styles.infoWrapper}>
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -42,7 +55,7 @@ export default function DefaultScreenPosts({ route, navigation }) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  onPress={() => navigation.navigate("Map", item.photoData)}
+                  onPress={() => navigation.navigate("Map", item)}
                   style={styles.locationWrapper}
                 >
                   <SimpleLineIcons
@@ -51,9 +64,7 @@ export default function DefaultScreenPosts({ route, navigation }) {
                     size={24}
                     color="#BDBDBD"
                   />
-                  <Text style={styles.location}>
-                    {item.photoData.photoInfo.location}
-                  </Text>
+                  <Text style={styles.location}>{item.location}</Text>
                 </TouchableOpacity>
               </View>
             </View>
