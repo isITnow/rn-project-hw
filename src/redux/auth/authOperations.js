@@ -14,9 +14,9 @@ export const authSignUpUser =
   ({ login, email, password }) =>
   async (dispatch, getState) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email.toLowerCase(), password);
       await updateProfile(auth.currentUser, {
-        displayName: login,
+        displayName: login.trim(),
       });
 
       const updatedUser = auth.currentUser;
@@ -29,7 +29,7 @@ export const authSignUpUser =
         })
       );
     } catch (error) {
-      console.log("REGISTER ERROR: ", error.message);
+      console.error("REGISTER ERROR: ", error.message);
     }
   };
 
@@ -37,9 +37,9 @@ export const authSignInUser =
   ({ email, password }) =>
   async (dispatch, getState) => {
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email.toLowerCase(), password);
     } catch (error) {
-      console.log("LOGIN ERROR: ", error.message);
+      console.error("LOGIN ERROR: ", error.message);
     }
   };
 

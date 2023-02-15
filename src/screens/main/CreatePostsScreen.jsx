@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   Text,
   View,
@@ -27,14 +28,16 @@ const initialState = {
 
 export default function CreatePostsScreen({ navigation }) {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
+
   const [photo, setPhoto] = useState("");
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
   const [photoInfo, setPhotoInfo] = useState(initialState);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+
   const [coordinates, setCoordinates] = useState(null);
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -53,7 +56,7 @@ export default function CreatePostsScreen({ navigation }) {
   const getLocation = async () => {
     // let { status } = await Location.requestForegroundPermissionsAsync();
     // if (status !== "granted") {
-    //   setErrorMsg("Permission to access location was denied");
+    //   console.log("Permission to access location was denied");
     //   return;
     // }
     const { coords } = await Location.getCurrentPositionAsync();
@@ -94,6 +97,24 @@ export default function CreatePostsScreen({ navigation }) {
     return photoUrl;
   };
 
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        photo,
+        title: photoInfo.title,
+        location: photoInfo.location,
+        coordinates,
+        userId,
+        login,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
   const inputHandler = (value, name) => {
     setPhotoInfo((prevState) => ({ ...prevState, [name]: value }));
   };
@@ -108,9 +129,10 @@ export default function CreatePostsScreen({ navigation }) {
 
   const postHandler = () => {
     navigation.navigate("DefaultScreen", { photoData });
-    uploadPhotoToServer();
+    uploadPostToServer();
     setPhoto("");
     setPhotoInfo(initialState);
+    setCoordinates(null);
   };
 
   if (hasPermission === null) {

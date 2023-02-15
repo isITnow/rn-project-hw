@@ -83,7 +83,7 @@ export default function RegistrationScreen({ navigation }) {
                 placeholder="Enter your email"
                 value={credentials.email}
                 onChangeText={(value) => {
-                  inputHandler(value.toLowerCase(), "email");
+                  inputHandler(value, "email");
                 }}
                 onFocus={() => {
                   onFocusHandler();
