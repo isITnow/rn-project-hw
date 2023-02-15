@@ -12,7 +12,7 @@ import { SimpleLineIcons, Feather } from "@expo/vector-icons";
 import { db } from "../../firebase/config";
 import { collection, getDocs } from "firebase/firestore";
 
-export default function DefaultScreenPosts({ route, navigation }) {
+export default function DefaultScreenPosts({ navigation }) {
   const [posts, setPosts] = useState([]);
   console.log("posts: ", posts);
 
@@ -47,7 +47,9 @@ export default function DefaultScreenPosts({ route, navigation }) {
               <View style={styles.infoWrapper}>
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  onPress={() => navigation.navigate("Comments")}
+                  onPress={() =>
+                    navigation.navigate("Comments", { postId: item.id })
+                  }
                   style={styles.commentsWrapper}
                 >
                   <Feather name="message-circle" size={24} color="#BDBDBD" />
