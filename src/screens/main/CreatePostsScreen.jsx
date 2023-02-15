@@ -54,17 +54,25 @@ export default function CreatePostsScreen({ navigation }) {
   }, []);
 
   const getLocation = async () => {
-    // let { status } = await Location.requestForegroundPermissionsAsync();
-    // if (status !== "granted") {
-    //   console.log("Permission to access location was denied");
-    //   return;
-    // }
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+      return;
+    }
     const { coords } = await Location.getCurrentPositionAsync();
     const coordinates = {
       latitude: coords.latitude,
       longitude: coords.longitude,
     };
     setCoordinates(coordinates);
+  };
+
+  const camTypeChange = () => {
+    setType(
+      type === Camera.Constants.Type.back
+        ? Camera.Constants.Type.front
+        : Camera.Constants.Type.back
+    );
   };
 
   const takePhoto = async () => {
@@ -81,20 +89,24 @@ export default function CreatePostsScreen({ navigation }) {
   };
 
   const uploadPhotoToServer = async () => {
-    const response = await fetch(photo);
-    const file = await response.blob();
+    try {
+      const response = await fetch(photo);
+      const file = await response.blob();
 
-    const photoId = nanoid(10);
+      const photoId = nanoid(10);
 
-    const storage = getStorage();
-    const storageRef = ref(storage, `photos/${photoId}`);
+      const storage = getStorage();
+      const storageRef = ref(storage, `photos/${photoId}`);
 
-    await uploadBytes(storageRef, file);
+      await uploadBytes(storageRef, file);
 
-    const photoPath = ref(storage, `photos/${photoId}`);
-    const photoUrl = await getDownloadURL(photoPath);
+      const photoPath = ref(storage, `photos/${photoId}`);
+      const photoUrl = await getDownloadURL(photoPath);
 
-    return photoUrl;
+      return photoUrl;
+    } catch (error) {
+      console.error("Upload photo error: ", error.message);
+    }
   };
 
   const uploadPostToServer = async () => {
@@ -169,6 +181,12 @@ export default function CreatePostsScreen({ navigation }) {
               <View style={styles.photoView}>
                 <TouchableOpacity style={styles.button} onPress={takePhoto}>
                   <FontAwesome name="camera" size={24} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.flipCam}
+                  onPress={camTypeChange}
+                >
+                  <Text style={styles.flipCamText}>flip cam</Text>
                 </TouchableOpacity>
               </View>
             </Camera>
@@ -284,6 +302,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
+  },
+  flipCam: {
+    position: "absolute",
+    right: 5,
+    padding: 10,
+    textAlign: "center",
+  },
+  flipCamText: {
+    fontFamily: "Roboto-Medium",
+    color: "#ffffff",
+    letterSpacing: 0.7,
   },
   cameraTag: {
     fontFamily: "Roboto-Regular",
