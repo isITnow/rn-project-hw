@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     flex: 1,
     justifyContent: "flex-end",
-    marginHorizontal: 16,
+    paddingHorizontal: 16,
   },
   textInput: {
     borderRadius: 100,
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     height: 34,
     justifyContent: "center",
     position: "absolute",
-    right: 8,
+    right: 25,
     width: 34,
   },
 });
