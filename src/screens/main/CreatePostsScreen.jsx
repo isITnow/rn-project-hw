@@ -19,8 +19,6 @@ import { db } from "../../firebase/config";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 
-import { nanoid } from "nanoid";
-
 const initialState = {
   title: "",
   location: "",
@@ -93,7 +91,7 @@ export default function CreatePostsScreen({ navigation }) {
       const response = await fetch(photo);
       const file = await response.blob();
 
-      const photoId = nanoid(10);
+      const photoId = Date.now().toString();
 
       const storage = getStorage();
       const storageRef = ref(storage, `photos/${photoId}`);
@@ -140,7 +138,7 @@ export default function CreatePostsScreen({ navigation }) {
   const isPhotoDataReady = !!photo && !!photoInfo.title && !!photoInfo.location;
 
   const postHandler = () => {
-    navigation.navigate("DefaultScreen", { photoData });
+    navigation.navigate("DefaultScreen");
     uploadPostToServer();
     setPhoto("");
     setPhotoInfo(initialState);
