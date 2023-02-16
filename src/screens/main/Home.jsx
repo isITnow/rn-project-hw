@@ -1,6 +1,7 @@
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, Feather, AntDesign } from "@expo/vector-icons";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 import CreatePostsScreen from "./CreatePostsScreen";
 import PostsScreen from "./PostsScreen";
@@ -32,7 +33,20 @@ export default function Home({ navigation }) {
       }}
     >
       <MainTab.Screen
-        options={{
+        options={({ route }) => ({
+          tabBarStyle: ((route) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+            if (routeName === "Comments" || routeName === "Map") {
+              return { display: "none" };
+            }
+            return {
+              height: 85,
+              paddingLeft: 80,
+              paddingRight: 80,
+              borderTopWidth: 1,
+              borderColor: "rgba(0, 0, 0, 0.1)",
+            };
+          })(route),
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             return (
@@ -54,7 +68,7 @@ export default function Home({ navigation }) {
             borderBottomWidth: 1,
             borderColor: "rgba(0, 0, 0, 0.3)",
           },
-        }}
+        })}
         name="Posts"
         component={PostsScreen}
       />
@@ -80,6 +94,9 @@ export default function Home({ navigation }) {
           headerStyle: {
             borderBottomWidth: 1,
             borderColor: "rgba(0, 0, 0, 0.3)",
+          },
+          tabBarStyle: {
+            display: "none",
           },
           headerLeft: () => (
             <TouchableOpacity

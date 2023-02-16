@@ -35,7 +35,7 @@ export default function CreatePostsScreen({ navigation }) {
 
   const [coordinates, setCoordinates] = useState(null);
 
-  const { userId, login } = useSelector((state) => state.auth);
+  const { userId, login, email } = useSelector((state) => state.auth);
 
   const keyboardHide = () => {
     setIsShownKeyboard(false);
@@ -118,8 +118,8 @@ export default function CreatePostsScreen({ navigation }) {
         coordinates,
         userId,
         login,
+        email,
       });
-      console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -129,11 +129,11 @@ export default function CreatePostsScreen({ navigation }) {
     setPhotoInfo((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const photoData = {
-    photo,
-    photoInfo,
-    coordinates,
-  };
+  // const photoData = {
+  //   photo,
+  //   photoInfo,
+  //   coordinates,
+  // };
 
   const isPhotoDataReady = !!photo && !!photoInfo.title && !!photoInfo.location;
 
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     overflow: "hidden",
     marginTop: 32,
-    height: "35%",
+    height: 240,
     borderRadius: 8,
   },
   camera: {

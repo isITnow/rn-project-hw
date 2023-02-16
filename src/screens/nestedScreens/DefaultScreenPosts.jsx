@@ -14,7 +14,6 @@ import { collection, getDocs } from "firebase/firestore";
 
 export default function DefaultScreenPosts({ navigation }) {
   const [posts, setPosts] = useState([]);
-  console.log("posts: ", posts);
 
   const getAllPosts = async () => {
     try {
@@ -48,12 +47,15 @@ export default function DefaultScreenPosts({ navigation }) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() =>
-                    navigation.navigate("Comments", { postId: item.id })
+                    navigation.navigate("Comments", {
+                      postId: item.id,
+                      photo: item.photo,
+                    })
                   }
                   style={styles.commentsWrapper}
                 >
                   <Feather name="message-circle" size={24} color="#BDBDBD" />
-                  <Text style={styles.commentsCount}>15</Text>
+                  <Text style={styles.commentsCount}>0</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -84,8 +86,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   postWrapper: {
-    // borderWidth: 1,
-    marginTop: 32,
+    paddingBottom: 20,
+    marginTop: 10,
   },
   image: {
     borderRadius: 8,

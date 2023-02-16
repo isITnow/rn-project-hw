@@ -20,13 +20,16 @@ export default function useRoute(isAuth) {
           name="Login"
           component={LoginScreen}
         />
-        {/* <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Home"
-          component={Home}
-        /> */}
       </AuthStack.Navigator>
     );
   }
-  return <Home />;
+  return (
+    <AuthStack.Navigator>
+      <AuthStack.Screen
+        options={{ headerShown: false }}
+        name="Home"
+        component={Home}
+      />
+    </AuthStack.Navigator>
+  );
 }

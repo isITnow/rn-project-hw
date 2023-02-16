@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
+  FlatList,
+  Image,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -19,8 +21,7 @@ export default function CommentsScreen({ route }) {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
-  console.log("allComments: ", allComments);
-  const { postId } = route.params;
+  const { postId, photo } = route.params;
   const { login } = useSelector((state) => state.auth);
 
   const keyboardHide = () => {
@@ -34,6 +35,7 @@ export default function CommentsScreen({ route }) {
       await setDoc(doc(db, "posts", postId, "comments", uniqName), {
         login,
         comment,
+        createdAt: commentDate(),
       });
       keyboardHide();
       setComment("");
@@ -49,7 +51,9 @@ export default function CommentsScreen({ route }) {
       );
 
       if (querySnapshot) {
-        setAllComments(querySnapshot.docs.map((doc) => ({ ...doc.data() })));
+        setAllComments(
+          querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        );
       }
     } catch (error) {
       console.error("Get comments error: ", error.message);
@@ -63,17 +67,33 @@ export default function CommentsScreen({ route }) {
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
+        <View style={styles.imageWrapper}>
+          <Image source={{ uri: photo }} style={styles.image} />
+        </View>
+        <FlatList
+          data={allComments}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <View
+              style={{
+                ...styles.commentWrapper,
+                marginLeft: index % 2 === 0 ? "auto" : 0,
+                marginRight: index % 2 == 0 ? 0 : "auto",
+              }}
+            >
+              <Text style={styles.commentLogin}>{item.login}</Text>
+              <Text style={styles.commentText}>{item.comment}</Text>
+              <Text style={styles.commentDate}>{item.createdAt}</Text>
+            </View>
+          )}
+        />
         <TextInput
           value={comment}
           onChangeText={(value) => {
             setComment(value);
           }}
           textAlign="left"
-          style={{
-            ...styles.textInput,
-            // marginTop: 16,
-            // paddingLeft: 30,
-          }}
+          style={styles.textInput}
           placeholderTextColor="#BDBDBD"
           placeholder="Comment..."
         />
@@ -105,6 +125,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     paddingHorizontal: 16,
+    paddingTop: 32,
+  },
+  imageWrapper: {
+    borderRadius: 8,
+    height: 240,
+    marginBottom: 32,
+    overflow: "hidden",
+    width: "100%",
+  },
+  image: {
+    height: "100%",
+    width: "100%",
   },
   textInput: {
     borderRadius: 100,
@@ -117,6 +149,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     letterSpacing: 0.7,
     marginBottom: 16,
+    marginTop: 16,
     paddingVertical: 13,
     paddingLeft: 16,
     paddingRight: 48,
@@ -131,4 +164,51 @@ const styles = StyleSheet.create({
     right: 25,
     width: 34,
   },
+  commentWrapper: {
+    width: "80%",
+    borderRadius: 10,
+    padding: 16,
+    backgroundColor: "#f6f6f6",
+    marginBottom: 24,
+  },
+  commentText: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 0.7,
+    color: "#212121",
+  },
+  commentLogin: {
+    fontFamily: "Roboto-Medium",
+    fontSize: 10,
+    lineHeight: 18,
+    letterSpacing: 0.7,
+    color: "#292929",
+    marginBottom: 7,
+    textDecorationLine: "underline",
+  },
+  commentDate: {
+    fontFamily: "Roboto-Regular",
+    fontSize: 10,
+    lineHeight: 12,
+    color: "#BDBDBD",
+    marginTop: 8,
+  },
 });
+
+const commentDate = () => {
+  const date = new Date();
+
+  let hours = date.getHours();
+  let min = date.getMinutes();
+
+  if (hours.length === 1) {
+    hours = "0" + hours;
+  }
+
+  if (min.length === 1) {
+    min = "0" + min;
+  }
+
+  return `${date.toDateString()} | ${hours}:${min}`;
+};
