@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   View,
@@ -18,6 +18,8 @@ import { db } from "../../firebase/config";
 export default function CommentsScreen({ route }) {
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const [comment, setComment] = useState("");
+  const [allComments, setAllComments] = useState([]);
+  console.log("allComments: ", allComments);
   const { postId } = route.params;
   const { login } = useSelector((state) => state.auth);
 
@@ -39,6 +41,24 @@ export default function CommentsScreen({ route }) {
       console.error("Create comment error: ", error.message);
     }
   };
+
+  const getAllComments = async () => {
+    try {
+      const querySnapshot = await getDocs(
+        collection(db, "posts", postId, "comments")
+      );
+
+      if (querySnapshot) {
+        setAllComments(querySnapshot.docs.map((doc) => ({ ...doc.data() })));
+      }
+    } catch (error) {
+      console.error("Get comments error: ", error.message);
+    }
+  };
+
+  useEffect(() => {
+    getAllComments();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
