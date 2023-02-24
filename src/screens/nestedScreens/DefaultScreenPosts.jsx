@@ -31,7 +31,7 @@ export default function DefaultScreenPosts({ navigation }) {
 
   useEffect(() => {
     getAllPosts();
-  }, []);
+  }, [posts]);
 
   return (
     <View style={styles.container}>
